@@ -15,6 +15,7 @@ async function getCategories() {
       data.categories.forEach((c) => {
         const li = document.createElement("li");
         li.textContent = c.strCategory;
+        li.dataset.category = c.strCategory;
         list.appendChild(li);
       });
     }
@@ -41,6 +42,8 @@ document.addEventListener("click", (e) => {
 // *********************************************************************
 
 const grid = document.getElementById("categories-grid");
+const catSec = document.querySelector(".categories-section");
+const mealsSec = document.getElementById("meals-by-category");
 
 async function showCategories() {
   try {
@@ -49,15 +52,18 @@ async function showCategories() {
     );
     const data = await res.json();
 
-    data.categories.forEach((c) => {
-      const card = document.createElement("div");
-      card.className = "category-card";
-      card.innerHTML = `
-                <img src="${c.strCategoryThumb}">
-                <div class="category-title">${c.strCategory}</div>
-            `;
-      grid.appendChild(card);
-    });
+    if (data.categories) {
+      data.categories.forEach((c) => {
+        const card = document.createElement("div");
+        card.className = "category-card";
+        card.dataset.category = c.strCategory;
+        card.innerHTML = `
+          <img src="${c.strCategoryThumb}">
+          <div class="category-title">${c.strCategory}</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
   } catch (err) {
     console.error(err);
   }
@@ -68,40 +74,14 @@ document.addEventListener("DOMContentLoaded", showCategories);
 // *********************************************************************
 // Show Meals by Category
 
-const catSec = document.querySelector(".categories-section");
-const mealsSec = document.getElementById("meals-by-category");
 const mealsGrid = document.getElementById("meals-grid");
-
-async function showCategories() {
-  try {
-    const res = await fetch("https://www.themealdb.com/api/json/v1/1/categories.php");
-    const data = await res.json();
-
-    data.categories.forEach((c) => {
-      const card = document.createElement("div");
-      card.className = "category-card";
-      card.dataset.category = c.strCategory; 
-      card.innerHTML = `
-        <img src="${c.strCategoryThumb}">
-        <div class="category-title">${c.strCategory}</div>
-      `;
-      grid.appendChild(card);
-
-      card.addEventListener("click", () => {
-        catSec.classList.add("hidden");
-        mealsSec.classList.remove("hidden");
-        getMealsByCategory(c.strCategory);
-      });
-    });
-  } catch (err) {
-    console.error(err);
-  }
-}
 
 async function getMealsByCategory(category) {
   mealsGrid.innerHTML = "";
   try {
-    const res = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
+    const res = await fetch(
+      `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`
+    );
     const data = await res.json();
     if (data.meals) {
       data.meals.forEach((meal) => {
@@ -122,16 +102,39 @@ async function getMealsByCategory(category) {
   }
 }
 
+grid.addEventListener('click', (e) => {
+  const categoryCard = e.target.closest('.category-card');
+  if (categoryCard) {
+    const categoryName = categoryCard.dataset.category;
+    catSec.classList.add("hidden");
+    mealsSec.classList.remove("hidden");
+    getMealsByCategory(categoryName);
+  }
+});
+
+list.addEventListener('click', (e) => {
+  if (e.target.tagName === 'LI') {
+    const categoryName = e.target.dataset.category;
+    sidebar.classList.remove("show");
+    catSec.classList.add("hidden");
+    mealsSec.classList.remove("hidden");
+    getMealsByCategory(categoryName);
+  }
+});
+
 // *********************************************************************
-// Search Function 
+
+// Add these new consts to the top of your script.js file
 const searchForm = document.querySelector(".searchForm");
 const searchInput = document.getElementById("searchInput");
 
-
+// Add this function
 async function getMealsBySearch(name) {
   mealsGrid.innerHTML = "";
   try {
-    const res = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`);
+    const res = await fetch(
+      `https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`
+    );
     const data = await res.json();
     if (data.meals) {
       data.meals.forEach((meal) => {
@@ -152,7 +155,7 @@ async function getMealsBySearch(name) {
   }
 }
 
-
+// Add this event listener
 searchForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const searchTerm = searchInput.value.trim();
@@ -165,5 +168,132 @@ searchForm.addEventListener("submit", (e) => {
 
 // *********************************************************************
 
+// Add these new constants to the top of your script.js file
+const detailsSec = document.getElementById("meal-details");
+const detailsContainer = document.getElementById("meal-details-container");
+const backButton = document.getElementById("back-button");
 
-// *********************************************************************
+mealsGrid.addEventListener("click", (e) => {
+  const mealCard = e.target.closest(".meal-card");
+  if (mealCard) {
+    const mealId = mealCard.dataset.id;
+    getMealDetails(mealId);
+    mealsSec.classList.add("hidden");
+    detailsSec.classList.remove("hidden");
+    history.pushState({ view: 'details', id: mealId }, '', `#meal-${mealId}`);
+  }
+});
+
+async function getMealDetails(id) {
+  detailsContainer.innerHTML = "";
+  try {
+    const res = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+    const data = await res.json();
+    const meal = data.meals[0];
+
+    if (meal) {
+      const ingredientsList = [];
+      const measuresList = [];
+      for (let i = 1; i <= 20; i++) {
+        const ingredient = meal[`strIngredient${i}`];
+        const measure = meal[`strMeasure${i}`];
+        if (ingredient && ingredient.trim() !== "") {
+          ingredientsList.push(ingredient);
+          measuresList.push(measure);
+        }
+      }
+
+      // Handle tags
+      const tags = meal.strTags ? meal.strTags.split(',') : [];
+
+      // Split instructions by period to create an ordered list
+      const instructions = meal.strInstructions.split('. ').filter(step => step.trim() !== '');
+
+      const mealDetailsHTML = `
+        <div class="meal-details-image">
+          <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+        </div>
+        <div class="meal-details-info">
+          <h2>${meal.strMeal}</h2>
+          <p class="category-text">Category: ${meal.strCategory}</p>
+          <a href="${meal.strSource}" target="_blank" class="source-link">Source: ${meal.strSource}</a>
+          
+          <div class="meal-details-tags">
+            <h3>Tags:</h3>
+            <div class="tag-list">
+              ${tags.map(tag => `<span class="tag">${tag.trim()}</span>`).join('')}
+            </div>
+          </div>
+
+          <div class="details-box">
+            <h3>Ingredients</h3>
+            <ul class="details-list">
+              ${ingredientsList.map((item, index) => `
+                <li>
+                  <span class="ingredient-number">${index + 1}</span>
+                  ${item}
+                </li>`).join('')}
+            </ul>
+          </div>
+          <div class="details-box">
+            <h3>Measures</h3>
+            <ul class="details-list">
+              ${measuresList.map(item => `
+                <li>
+                  <i class="fas fa-arrow-right"></i>
+                  ${item}
+                </li>`).join('')}
+            </ul>
+          </div>
+          <div class="details-instructions">
+            <h3>Instructions</h3>
+            <ul class="instructions-list">
+              ${instructions.map(instruction => `
+                <li>
+                  <i class="fas fa-check-square"></i>
+                  ${instruction.trim()}
+                </li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      `;
+      detailsContainer.innerHTML = mealDetailsHTML;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+backButton.addEventListener('click', (e) => {
+  e.preventDefault();
+  history.back();
+});
+
+window.addEventListener('popstate', (e) => {
+  const state = e.state;
+  if (state) {
+    if (state.view === 'categories') {
+      mealsSec.classList.add("hidden");
+      detailsSec.classList.add("hidden");
+      catSec.classList.remove("hidden");
+    } else if (state.view === 'meals') {
+      detailsSec.classList.add("hidden");
+      catSec.classList.add("hidden");
+      mealsSec.classList.remove("hidden");
+      if (state.category) {
+        getMealsByCategory(state.category);
+      } else if (state.search) {
+        getMealsBySearch(state.search);
+      }
+    } else if (state.view === 'details') {
+      mealsSec.classList.add("hidden");
+      catSec.classList.add("hidden");
+      detailsSec.classList.remove("hidden");
+      getMealDetails(state.id);
+    }
+  } else {
+    mealsSec.classList.add("hidden");
+    detailsSec.classList.add("hidden");
+    catSec.classList.remove("hidden");
+  }
+});

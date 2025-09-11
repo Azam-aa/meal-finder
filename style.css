@@ -155,6 +155,7 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
+    padding: 20px;
 }
 
 .category-card {
@@ -194,19 +195,19 @@ body {
 }
 
 .meals-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
 }
 
 .meal-card {
   position: relative;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  transition: transform 0.2s;
-  cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+    cursor: pointer;
 }
 
 .meal-card img {
@@ -226,6 +227,163 @@ body {
 }
 
 /* ************************************************** */
+/* MEAL DETAILS SECTION */
+.meal-details-header {
+    background-color: orangered;
+    padding: 10px 20px;
+}
 
+.meal-details-title-bar {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.meal-details-container {
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+@media (min-width: 768px) {
+    .meal-details-container {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+
+.meal-details-image {
+    flex: 1;
+    text-align: center;
+}
+
+.meal-details-image img {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.meal-details-info {
+    flex: 2;
+}
+
+.meal-details-info h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.meal-details-info .category-text {
+    font-size: 1.1rem;
+    color: #555;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.meal-details-info .source-link {
+  font-size: 0.9rem;
+  color: #777;
+  text-decoration: none;
+}
+
+.meal-details-info .source-link:hover {
+  text-decoration: underline;
+}
+
+.meal-details-tags {
+    margin: 15px 0;
+}
+
+.meal-details-tags h3 {
+    display: inline-block;
+    margin-right: 10px;
+    color: #555;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag {
+    background: orangered;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.details-box {
+    background-color: orangered;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.details-box h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.details-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+}
+
+.details-list li {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ingredient-number {
+  background-color: white;
+  color: orangered;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.details-instructions {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.instructions-list {
+    list-style: none;
+    padding: 0;
+}
+
+.instructions-list li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.instructions-list li i {
+    color: orangered;
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
 
 /* ************************************************** */
