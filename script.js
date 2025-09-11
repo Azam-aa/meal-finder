@@ -2,7 +2,15 @@ const menu = document.querySelector(".menu-icon");
 const sidebar = document.getElementById("categorySidebar");
 const close = document.querySelector(".close-icon");
 const list = document.getElementById("categoryList");
-// *********************************************************************
+const grid = document.getElementById("categories-grid");
+const catSec = document.querySelector(".categories-section");
+const mealsSec = document.getElementById("meals-by-category");
+const mealsGrid = document.getElementById("meals-grid");
+const searchForm = document.querySelector(".searchForm");
+const searchInput = document.getElementById("searchInput");
+const detailsSec = document.getElementById("meal-details");
+const detailsContainer = document.getElementById("meal-details-container");
+const backButton = document.getElementById("back-button");
 
 async function getCategories() {
   list.innerHTML = "";
@@ -39,12 +47,6 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// *********************************************************************
-
-const grid = document.getElementById("categories-grid");
-const catSec = document.querySelector(".categories-section");
-const mealsSec = document.getElementById("meals-by-category");
-
 async function showCategories() {
   try {
     const res = await fetch(
@@ -69,12 +71,10 @@ async function showCategories() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", showCategories);
-
-// *********************************************************************
-// Show Meals by Category
-
-const mealsGrid = document.getElementById("meals-grid");
+document.addEventListener("DOMContentLoaded", () => {
+  showCategories();
+  history.replaceState({ view: 'categories' }, '', '#categories');
+});
 
 async function getMealsByCategory(category) {
   mealsGrid.innerHTML = "";
@@ -109,6 +109,7 @@ grid.addEventListener('click', (e) => {
     catSec.classList.add("hidden");
     mealsSec.classList.remove("hidden");
     getMealsByCategory(categoryName);
+    history.pushState({ view: 'meals', category: categoryName }, '', `#category-${categoryName}`);
   }
 });
 
@@ -119,16 +120,10 @@ list.addEventListener('click', (e) => {
     catSec.classList.add("hidden");
     mealsSec.classList.remove("hidden");
     getMealsByCategory(categoryName);
+    history.pushState({ view: 'meals', category: categoryName }, '', `#category-${categoryName}`);
   }
 });
 
-// *********************************************************************
-
-// Add these new consts to the top of your script.js file
-const searchForm = document.querySelector(".searchForm");
-const searchInput = document.getElementById("searchInput");
-
-// Add this function
 async function getMealsBySearch(name) {
   mealsGrid.innerHTML = "";
   try {
@@ -155,7 +150,6 @@ async function getMealsBySearch(name) {
   }
 }
 
-// Add this event listener
 searchForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const searchTerm = searchInput.value.trim();
@@ -163,15 +157,9 @@ searchForm.addEventListener("submit", (e) => {
     catSec.classList.add("hidden");
     mealsSec.classList.remove("hidden");
     getMealsBySearch(searchTerm);
+    history.pushState({ view: 'meals', search: searchTerm }, '', `#search-${searchTerm}`);
   }
 });
-
-// *********************************************************************
-
-// Add these new constants to the top of your script.js file
-const detailsSec = document.getElementById("meal-details");
-const detailsContainer = document.getElementById("meal-details-container");
-const backButton = document.getElementById("back-button");
 
 mealsGrid.addEventListener("click", (e) => {
   const mealCard = e.target.closest(".meal-card");
@@ -203,10 +191,8 @@ async function getMealDetails(id) {
         }
       }
 
-      // Handle tags
       const tags = meal.strTags ? meal.strTags.split(',') : [];
 
-      // Split instructions by period to create an ordered list
       const instructions = meal.strInstructions.split('. ').filter(step => step.trim() !== '');
 
       const mealDetailsHTML = `
