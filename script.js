@@ -123,6 +123,47 @@ async function getMealsByCategory(category) {
 }
 
 // *********************************************************************
+// Search Function 
+const searchForm = document.querySelector(".searchForm");
+const searchInput = document.getElementById("searchInput");
+
+
+async function getMealsBySearch(name) {
+  mealsGrid.innerHTML = "";
+  try {
+    const res = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`);
+    const data = await res.json();
+    if (data.meals) {
+      data.meals.forEach((meal) => {
+        const card = document.createElement("div");
+        card.className = "meal-card";
+        card.dataset.id = meal.idMeal;
+        card.innerHTML = `
+          <img src="${meal.strMealThumb}">
+          <div class="meal-title">${meal.strMeal}</div>
+        `;
+        mealsGrid.appendChild(card);
+      });
+    } else {
+      mealsGrid.innerHTML = "<h2>No meals found for this search.</h2>";
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+
+searchForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const searchTerm = searchInput.value.trim();
+  if (searchTerm) {
+    catSec.classList.add("hidden");
+    mealsSec.classList.remove("hidden");
+    getMealsBySearch(searchTerm);
+  }
+});
+
+// *********************************************************************
 
 
 // *********************************************************************
