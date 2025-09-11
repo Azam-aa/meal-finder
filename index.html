@@ -1,30 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meal-finder</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <header>
-        <nav class="navbar">
-            <h1>🍴 MEAL FINDER</h1>
-            <form class="searchForm">
-                <input type="text" id="searchInput" placeholder="Search meals...">
-                <button type="submit">🔍</button>
-            </form>
-        </nav>
+      <nav class="navbar">
+        <h1 class="logo">🍴 MEAL FINDER</h1>
+        <div class="menu-icon">☰</div>
+      </nav>
     </header>
 
-    <main>
-        <section id="categories"></section>
-        <section id="meals"></section>
-        <section id="mealsDetails"></section>
-    </main>
+    <div class="category-sidebar" id="categorySidebar">
+      <div class="close-icon">&times;</div>
+      <ul id="categoryList">
+        </ul>
+    </div>
 
+    <div class="search-section">
+      <div class="search-overlay">
+        <form class="searchForm">
+          <input type="text" id="searchInput" placeholder="Search recipes here..." />
+          <button type="submit">🔍</button>
+        </form>
+        <h2 class="search-title">What are your favorite cuisines?</h2>
+        <p class="search-subtitle">PERSONALIZE YOUR EXPERIENCE</p>
+      </div>
+    </div>
+
+    
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
