@@ -135,3 +135,55 @@ body {
 #categoryList li:hover {
     color: orangered;
 }
+
+/* ************************************************** */
+/* Categories Section */
+
+.categories {
+    padding: 40px 20px;
+    background: #f7f7f7;
+}
+
+.categories-header {
+    border-bottom: 3px solid orangered;
+    display: inline-block;
+    margin-bottom: 20px;
+    margin-left: 15px;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.category-card {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+}
+
+.category-card img {
+    width: 100%;
+    display: block;
+}
+
+.category-title {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: orangered;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+/* ************************************************** */
