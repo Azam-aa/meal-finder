@@ -31,3 +31,33 @@ This project relies on the following endpoints from **TheMealDB API**:
 * **Search Meal by Name:** `http://www.themealdb.com/api/json/v1/1/search.php?s={foodName}`
 * **Meal Details by ID:** `https://www.themealdb.com/api/json/v1/1/lookup.php?i={ID}`
 * **Filter by Category:** `https://www.themealdb.com/api/json/v1/1/filter.php?c={Category}`
+
+
+## 💻 How to Run Locally
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/Azam-aa/meal-finder.git](https://github.com/Azam-aa/meal-finder.git)
+    ```
+
+2.  **Navigate to the project directory:**
+    ```bash
+    cd meal-finder
+    ```
+
+3.  **Get API Keys:**
+    * **TheMealDB:** The API is public and does not require a key for these endpoints.
+
+4.  **Run with a local server:**
+    * For the JavaScript `import` statements to work correctly, you must run a local server.
+    * If using VS Code, right-click on `index.html` and select "Open with Live Server".
+
+## 👤 Author
+
+**Azam Pasha**
+* **Email:** azamp442@gmail.com
+* **GitHub:** [github.com/Azam-aa](https://github.com/Azam-aa)
+
+## 📄 License
+
+This project is licensed under the MIT License.
