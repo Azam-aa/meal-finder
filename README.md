@@ -58,6 +58,7 @@ This project relies on the following endpoints from **TheMealDB API**:
 * **Email:** azamp442@gmail.com
 * **GitHub:** [github.com/Azam-aa](https://github.com/Azam-aa)
 *  **LinkdIn:** ([www.linkedin.com/in/azam-pasha01](https://www.linkedin.com/in/azam-pasha01/)).
+*  * **Email:** +91-9008713616
 
 ## 📄 License
 
