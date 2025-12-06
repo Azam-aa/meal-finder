@@ -22,7 +22,6 @@ A dynamic web application that helps users discover and explore recipes based on
 * **JavaScript (ES6+):** For all application logic, API calls, and DOM manipulation.
 * **TheMealDB API:** The primary data source for meal categories, search results, and recipe details.
 
-
 ## 🔗 APIs Used
 
 This project relies on the following endpoints from **TheMealDB API**:
